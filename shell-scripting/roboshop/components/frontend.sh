@@ -3,15 +3,11 @@
 USER_ID=$(id -u)
 if [ "$USER_ID" -ne 0 ]; then
   echo you should run the script as sudo or root user
-  exit
+  exit 1
   fi
 
 echo -e"\e[36m installing nginx \e[0m"
 yum install nginx -y
-
-echo -e"\e[36m downloading nginx \e[0m"
-systemctl enable nginx
-systemctl start nginx
 
 curl -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main.zip"
 
