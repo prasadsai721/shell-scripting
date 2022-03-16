@@ -12,7 +12,7 @@ if[ $? -eq 0 ]; then
  echo "\e[32msuccess\e[0m]"
 else
  echo "\e[31mFAILURE\e[0m]"
-exit 1
+exit 2
 fi
 
 echo -e"\e[36m Downloading nginx \e[0m"
@@ -21,7 +21,7 @@ if[ $? -eq 0 ]; then
  echo "\e[32msuccess\e[0m]"
 else
  echo "\e[31mFAILURE\e[0m]"
-exit 1
+exit 2
 fi
 
 echo -e"\e[36m cleaningup old nginx contant and extract new download archive\e[0m"
@@ -36,7 +36,7 @@ if[ $? -eq 0 ]; then
  echo "\e[32msuccess\e[0m]"
 else
  echo "\e[31mFAILURE\e[0m]"
-exit 1
+exit 2
 fi
 
 echo -e"\e[36m starting nginx \e[0m"
