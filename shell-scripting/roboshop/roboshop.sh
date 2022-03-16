@@ -2,5 +2,5 @@
 
 if [-e components/$1.sh]; then
 echo "component dose not exit"
-  fi
+fi
 bash components/$1.sh
