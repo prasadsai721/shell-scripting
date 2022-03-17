@@ -1,45 +1,36 @@
 #!/bin/bash
 
-USER_ID=$(id -u)
-if [ "$USER_ID" -ne 0 ]; then
-  echo you should run the script as sudo or root user
-  exit 1
-  fi
+source components/common.sh
 
-echo -e"\e[36m installing nginx \e[0m"
-yum install nginx -y
-if[ $? -eq 0 ]; then
- echo "\e[32msuccess\e[0m"
-else
- echo "\e[31mFAILURE\e[0m"
-exit 2
-fi
+Print "Installing Nginx"
+yum install nginx -y &>>$LOG_FILE
+StatCheck $?
 
-echo -e"\e[36m Downloading nginx \e[0m"
-curl -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main.zip"
-if[ $? -eq 0 ]; then
- echo -e "\e[32msuccess\e[0m"
-else
- echo -e "\e[31mFAILURE\e[0m"
-exit 2
-fi
+Print "Downloading Nginx Content"
+curl -f -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main.zip" &>>$LOG_FILE
+StatCheck $?
 
-echo -e"\e[36m cleaningup old nginx contant and extract new download archive\e[0m"
-cd /usr/share/nginx/html
-rm -rf
-unzip /tmp/frontend.zip
-mv frontend-main/* .
-mv static/* .
-rm -rf frontend-main README.md
-mv localhost.conf /etc/nginx/default.d/roboshop.conf
-if[ $? -eq 0 ]; then
- echo -e "\e[32msuccess\e[0m"
-else
- echo -e "\e[31mFAILURE\e[0m"
-exit 2
-fi
+Print "Cleanup Old Nginx Content"
+rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
+StatCheck $?
 
-echo -e "\e[36m starting nginx \e[0m"
-systemctl enable nginx
-systemctl restart nginx
+cd /usr/share/nginx/html/
+
+Print "Extracting Archive"
+unzip /tmp/frontend.zip &>>$LOG_FILE  && mv frontend-main/* . &>>$LOG_FILE  && mv static/* &>>$LOG_FILE .
+StatCheck $?
+
+
+Print "Update RoboShop Configuration"
+mv localhost.conf /etc/nginx/default.d/roboshop.conf &>>$LOG_FILE
+for component in catalogue user cart shipping payment; do
+  echo -e "Updating $component in Configuration"
+  sed -i -e "/${component}/s/localhost/${component}.roboshop.internal/"  /etc/nginx/default.d/roboshop.conf
+  StatCheck $?
+done
+
+
+Print "Starting Nginx"
+systemctl restart nginx &>>$LOG_FILE  && systemctl enable nginx &>>$LOG_FILE
+StatCheck $?
 
