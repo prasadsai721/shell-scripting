@@ -28,6 +28,10 @@ StatCheck $?
 
 
 
+
+
+
+
 Print "Load Schema"
 cd mongodb-main
 for schema in catalogue users; do
