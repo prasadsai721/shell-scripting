@@ -26,6 +26,8 @@ Print "Extract Schema"
 cd /tmp && unzip -o mongodb.zip &>>$LOG_FILE
 StatCheck $?
 
+
+
 Print "Load Schema"
 cd mongodb-main
 for schema in catalogue users; do
