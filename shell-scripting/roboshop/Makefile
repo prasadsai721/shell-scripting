@@ -30,3 +30,5 @@ rabbitmq:
 
 dispatch:
 	bash components/dispatch.sh
+
+
