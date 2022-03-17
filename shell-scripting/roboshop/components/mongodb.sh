@@ -33,3 +33,4 @@ for schema in catalogue users; do
   mongo < ${schema}.js &>>$LOG_FILE
   StatCheck $?
 done
+
