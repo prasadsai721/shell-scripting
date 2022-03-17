@@ -34,3 +34,5 @@ for schema in catalogue users; do
   StatCheck $?
 done
 
+
+
