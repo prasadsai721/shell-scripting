@@ -33,3 +33,5 @@ done
 Print "Starting Nginx"
 systemctl restart nginx &>>$LOG_FILE  && systemctl enable nginx &>>$LOG_FILE
 StatCheck $?
+
+
